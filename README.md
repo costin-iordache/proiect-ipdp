@@ -1,0 +1,2 @@
+# proiect-ipdp
+subscription manager
