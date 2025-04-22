@@ -1,9 +1,9 @@
-import GetStarted from "@/components/GetStarted";
-import MySubscriptions from "@/components/MySubscriptions";
-import TotalSubscriptions from "@/components/TotalSubscriptions";
-import MonthOverview from "@/components/MonthOverview";
-import UpcomingPayments from "@/components/UpcomingPayments";
-import SearchBar from "@/components/SearchBar";
+import GetStarted from "@/app/components/GetStarted";
+import MySubscriptions from "@/app/components/MySubscriptions";
+import TotalSubscriptions from "@/app/components/TotalSubscriptions";
+import MonthOverview from "@/app/components/MonthOverview";
+import UpcomingPayments from "@/app/components/UpcomingPayments";
+import SearchBar from "@/app/components/SearchBar";
 
 export default function Home() {
   return (

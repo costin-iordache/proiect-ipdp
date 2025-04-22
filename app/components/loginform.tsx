@@ -15,7 +15,6 @@ const LoginForm: React.FC = () => {
 	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setError("");
-
 		const {
 			response,
 			data,
@@ -56,7 +55,12 @@ const LoginForm: React.FC = () => {
 				</div>
 
 				<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-					<form onSubmit={handleLogin} action="#" method="POST" className="space-y-6">
+					<form
+						onSubmit={handleLogin}
+						action="#"
+						method="POST"
+						className="space-y-6"
+					>
 						<div>
 							<label
 								htmlFor="email"
@@ -69,10 +73,10 @@ const LoginForm: React.FC = () => {
 									id="email"
 									name="email"
 									type="email"
-                  value={email}
+									value={email}
 									required
 									autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
+									onChange={(e) => setEmail(e.target.value)}
 									className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
 								/>
 							</div>
@@ -102,8 +106,8 @@ const LoginForm: React.FC = () => {
 									type="password"
 									required
 									autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
 									className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
 								/>
 							</div>
