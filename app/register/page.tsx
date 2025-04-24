@@ -11,40 +11,42 @@ export default function RagisterForm() {
 	const [error, setError] = useState<string>("");
 	const router = useRouter();
 
-	const handleLogin = async (event: React.FormEvent) => {
-		event.preventDefault();
-		setError("");
-		const {
-			response,
-			data,
-			error: registerError,
-		} = await registerUser(email, password);
-
-		if (registerError) {
-			setError(registerError);
-			console.error("Error during login:", registerError);
-			return;
-		}
-
-		if (
-			response?.ok &&
-			(data as RegisterResponseSuccess)?.message === "Register successful"
-		) {
-			const successData: RegisterResponseSuccess = data as RegisterResponseSuccess;
-			console.log("Login successful:", successData);
-			localStorage.setItem("user", JSON.stringify(successData.user));
-			router.push("/home");
-		} else {
-			const errorData: RegisterResponseError = data as RegisterResponseError;
-			setError(errorData?.error || "Login failed");
-			console.error("Login failed:", errorData);
-		}
-	};
+	const handleRegister = async (event: React.FormEvent) => {
+        event.preventDefault();
+        setError("");
+    
+        const {
+          response,
+          data,
+          error: registerError,
+        } = await registerUser(email, password);
+    
+        if (registerError) {
+          setError(registerError);
+          console.error("Error during registration:", registerError);
+          return;
+        }
+    
+        if (
+          response?.ok &&
+          (data as RegisterResponseSuccess)?.message === "Registration successful, please use the following link to confirm your account:"
+        ) {
+          const successData: RegisterResponseSuccess = data as RegisterResponseSuccess;
+          console.log("Registration successful:", successData);
+          // Optionally store user data in local storage or context
+          // localStorage.setItem("user", JSON.stringify(successData.user));
+          router.push("/login");
+        } else {
+          const errorData: RegisterResponseError = data as RegisterResponseError;
+          setError(errorData?.error || "Registration failed");
+          console.error("Registration failed:", errorData);
+        }
+      };
 
 	return (
 		<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm layout-column justify-center align-center bg-white px-6 py-6 ">
 			<form
-				onSubmit={handleLogin}
+				onSubmit={handleRegister}
 				action="#"
 				method="POST"
 				className="space-y-6"

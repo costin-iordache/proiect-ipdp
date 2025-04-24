@@ -1,8 +1,7 @@
 export interface LoginResponseSuccess {
-	message: "Login successful";
+	message: string;
 	user: {
 		id: number;
-		username: string;
 		email: string;
 	};
 }
@@ -12,12 +11,8 @@ export interface LoginResponseError {
 }
 
 export interface RegisterResponseSuccess {
-	message: "Register successful";
-	user: {
-		id: number;
-		username: string;
-		email: string;
-	};
+	message: string;
+	confirmation_link?: string;
 }
 
 export interface RegisterResponseError {

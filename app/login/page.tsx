@@ -36,9 +36,9 @@ const LoginForm: React.FC = () => {
 			localStorage.setItem("user", JSON.stringify(successData.user));
 			router.push("/home");
 		} else {
-			const errorData: LoginResponseError = data as LoginResponseError;
-			setError(errorData?.error || "Login failed");
-			console.error("Login failed:", errorData);
+			const error: LoginResponseError = data as LoginResponseError;
+			setError(error?.error || "Login failed");
+			console.error("Login failed:", error);
 		}
 	};
 
