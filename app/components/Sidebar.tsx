@@ -1,14 +1,23 @@
 // components/Sidebar.tsx
+'use client'
 import { UserIcon, HomeIcon, ChartBarIcon, BellIcon } from "@heroicons/react/24/outline";
-
-const menuItems = [
-  { icon: <UserIcon className="w-6 h-6" />, label: "Profile" },
-  { icon: <HomeIcon className="w-6 h-6" />, label: "Dashboard" },
-  { icon: <ChartBarIcon className="w-6 h-6" />, label: "Stats" },
-  { icon: <BellIcon className="w-6 h-6" />, label: "Alerts" },
-];
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+  
+	const router = useRouter();
+
+  const handleUserProfileClick = () => {
+			router.push("/login");
+  }
+  
+  const menuItems = [
+    { icon: <UserIcon className="w-6 h-6" onClick={handleUserProfileClick}/>, label: "Profile" },
+    { icon: <HomeIcon className="w-6 h-6" />, label: "Dashboard" },
+    { icon: <ChartBarIcon className="w-6 h-6" />, label: "Stats" },
+    { icon: <BellIcon className="w-6 h-6" />, label: "Alerts" },
+  ];
+
   return (
     <aside className="w-20 md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
       <div className="space-y-8">

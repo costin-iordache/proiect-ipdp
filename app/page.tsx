@@ -1,11 +1,9 @@
-import Header from "@/app/components/header";
-import LoginForm from "@/app/components/loginform";
+import GetStarted from "./landing-page/page";
 
 export default function Login() {
   return (
     <div>
-      <Header/>
-      <LoginForm/>
+      <GetStarted/>
     </div>
   );
 }
