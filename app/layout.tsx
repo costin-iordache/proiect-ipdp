@@ -1,17 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/app/components/Sidebar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "SubWiz",
@@ -26,7 +14,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex bg-purple-900 min-h-screen">
-        <Sidebar />
         <main className="flex-1 overflow-auto">{children}</main>
       </body>
     </html>

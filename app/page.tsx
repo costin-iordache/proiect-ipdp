@@ -1,9 +1,9 @@
-import GetStarted from "./landing-page/page";
+import LandingPageComp from './landing-page/page';
 
-export default function Login() {
+export default function LandingPage() {
   return (
-    <div>
-      <GetStarted/>
+    <div >
+      <LandingPageComp/>
     </div>
   );
 }
