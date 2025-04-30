@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connection.php';
+require_once 'db-connection.php';
 header('Content-Type: text/html; charset=utf-8');
 header('Access-Control-Allow-Origin: http://localhost:3001');
 header('Access-Control-Allow-Origin: http://localhost:3000');

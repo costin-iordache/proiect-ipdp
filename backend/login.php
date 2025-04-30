@@ -1,10 +1,14 @@
 <?php
-require_once 'db_connection.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+require_once 'db-connection.php';
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: http://localhost:3001');
 header('Access-Control-Allow-Origin: http://localhost:3000');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
@@ -20,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode(['error' => 'Account not confirmed. Please check your email.']);
                     exit;
                 }
-
                 if (password_verify($password, $user['password'])) {
-                    session_start();
                     $_SESSION['user_id'] = $user['id'];
-                    echo json_encode(['message' => 'Login successful', 'user' => ['id' => $user['id'], 'email' => $user['email']]]);
+                    $_SESSION['is_logged_in'] = true;
+                    $userData = ['id' => $user['id'], 'email' => $user['email']];
+                    echo json_encode(['success' => true, 'user' => ['userId' => $user['id']], 'isLoggedIn' => true]);
                 } else {
                     echo json_encode(['error' => 'Invalid credentials']);
                 }

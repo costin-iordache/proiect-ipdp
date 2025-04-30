@@ -1,8 +1,8 @@
 export interface LoginResponseSuccess {
-	message: string;
+	success: boolean;
 	user: {
 		id: number;
-		email: string;
+		isLoggedIn: boolean;
 	};
 }
 
@@ -11,7 +11,7 @@ export interface LoginResponseError {
 }
 
 export interface RegisterResponseSuccess {
-	message: string;
+	success: boolean;
 	confirmation_link?: string;
 }
 

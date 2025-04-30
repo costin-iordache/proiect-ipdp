@@ -4,7 +4,6 @@ import { registerUser } from "@/backend/auth";
 import { useState } from "react";
 import { RegisterResponseSuccess, RegisterResponseError } from "@/types/auth"; // Adjust import path
 
-
 export default function RagisterForm() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -12,36 +11,25 @@ export default function RagisterForm() {
 	const router = useRouter();
 
 	const handleRegister = async (event: React.FormEvent) => {
-        event.preventDefault();
-        setError("");
-    
-        const {
-          response,
-          data,
-          error: registerError,
-        } = await registerUser(email, password);
-    
-        if (registerError) {
-          setError(registerError);
-          console.error("Error during registration:", registerError);
-          return;
-        }
-    
-        if (
-          response?.ok &&
-          (data as RegisterResponseSuccess)?.message === "Registration successful, please use the following link to confirm your account:"
-        ) {
-          const successData: RegisterResponseSuccess = data as RegisterResponseSuccess;
-          console.log("Registration successful:", successData);
-          // Optionally store user data in local storage or context
-          // localStorage.setItem("user", JSON.stringify(successData.user));
-          router.push("/login");
-        } else {
-          const errorData: RegisterResponseError = data as RegisterResponseError;
-          setError(errorData?.error || "Registration failed");
-          console.error("Registration failed:", errorData);
-        }
-      };
+		event.preventDefault();
+		setError("");
+		const { response, data, error } = await registerUser(email, password);
+		if (error) {
+			setError(error);
+			console.error("Error during registration:", error);
+			return;
+		}
+		if (response?.ok && (data as RegisterResponseSuccess)?.success) {
+			const successData: RegisterResponseSuccess =
+				data as RegisterResponseSuccess;
+			console.log("Registration successful:", successData);
+			router.push("/login");
+		} else {
+			const errorData: RegisterResponseError = data as RegisterResponseError;
+			setError(errorData?.error || "Registration failed");
+			console.error("Registration failed:", errorData);
+		}
+	};
 
 	return (
 		<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm layout-column justify-center align-center bg-white px-6 py-6 ">

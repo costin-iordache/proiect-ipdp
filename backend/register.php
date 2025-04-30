@@ -1,7 +1,6 @@
 <?php
-require_once 'db_connection.php';
+require_once 'db-connection.php';
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: http://localhost:3001');
 header('Access-Control-Allow-Origin: http://localhost:3000');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // for test purposes, only a link is made, not sending an email 
                     $confirmation_link = "http://ipdp.local/confirm-account?user_id=" . $user_id . "&token=" . $confirmation_token;
-                    echo json_encode(['message' => 'Registration successful, please use the following link to confirm your account:', 'confirmation_link' => $confirmation_link]);
+                    echo json_encode(['success' => true, 'confirmation_link' => $confirmation_link]);
                     exit;
 
                 } else {

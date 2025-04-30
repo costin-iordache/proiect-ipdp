@@ -3,6 +3,7 @@
 
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/backend/auth";
+import { useAuth } from "@/backend/authContext";
 import { useState } from "react";
 import { LoginResponseSuccess, LoginResponseError } from "@/types/auth"; // Adjust import path
 
@@ -11,29 +12,22 @@ const LoginForm: React.FC = () => {
 	const [password, setPassword] = useState<string>("");
 	const [error, setError] = useState<string>("");
 	const router = useRouter();
+	const { setIsLoggedIn, setUserId, justLoggedIn } = useAuth();
 
 	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setError("");
-		const {
-			response,
-			data,
-			error: loginError,
-		} = await loginUser(email, password);
-
-		if (loginError) {
-			setError(loginError);
-			console.error("Error during login:", loginError);
+		const { success, data, error } = await loginUser(email, password);
+		if (error) {
+			setError(error);
+			console.error("Error during login:", error);
 			return;
 		}
-
-		if (
-			response?.ok &&
-			(data as LoginResponseSuccess)?.message === "Login successful"
-		) {
+		if (success && (data as LoginResponseSuccess)?.success) {
 			const successData: LoginResponseSuccess = data as LoginResponseSuccess;
-			console.log("Login successful:", successData);
-			localStorage.setItem("user", JSON.stringify(successData.user));
+			setIsLoggedIn(successData.user.isLoggedIn);
+			setUserId(successData.user.id);
+			justLoggedIn.current = true;
 			router.push("/home");
 		} else {
 			const error: LoginResponseError = data as LoginResponseError;
