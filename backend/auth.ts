@@ -45,6 +45,8 @@ export async function loginUser(
 export async function checkAuth(): Promise<{
 	isLoggedIn: boolean;
 	userId?: number;
+	firstName?: string;
+	lastName?: string;
 }> {
 	try {
 		const response = await fetch("http://ipdp.local/check-auth.php", {
@@ -57,10 +59,15 @@ export async function checkAuth(): Promise<{
 
 		if (response.ok) {
 			const data = await response.json();
-			return { isLoggedIn: data.isLoggedIn, userId: data.userId };
+			return {
+				isLoggedIn: data.isLoggedIn,
+				userId: data.userId,
+				firstName: data.firstName,
+				lastName: data.lastName,
+			};
 		} else {
 			console.error("Error checking authentication:", response.status);
-			return { isLoggedIn: false};
+			return { isLoggedIn: false };
 		}
 	} catch (error) {
 		console.error("Error during fetch in checkAuth:", error);

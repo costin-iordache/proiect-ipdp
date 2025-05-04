@@ -12,6 +12,10 @@ interface AuthContextType {
 	setUserId: (userId: number | undefined) => void;
 	hasLoggedOut: React.RefObject<boolean>;
 	justLoggedIn: React.RefObject<boolean>;
+	firstName: string | undefined;
+	setFirstName: (firstName: string | undefined) => void;
+	lastName: string | undefined;
+	setLastName: (lastName: string | undefined) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,6 +27,8 @@ export default function AuthProvider({
 }) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userId, setUserId] = useState<number | undefined>(undefined);
+	const [firstName, setFirstName] = useState<string | undefined>(undefined);
+	const [lastName, setLastName] = useState<string | undefined>(undefined);
 	const router = useRouter();
 	const pathname = usePathname();
 	const hasLoggedOut = useRef(false);
@@ -43,13 +49,23 @@ export default function AuthProvider({
 				const authResult = await checkAuth();
 				setIsLoggedIn(authResult.isLoggedIn);
 				setUserId(authResult.userId);
+				setFirstName(authResult.firstName);
+				setLastName(authResult.lastName);
 				console.log(
 					"AuthProvider - isLoggedIn:",
 					authResult.isLoggedIn,
 					"userId:",
-					authResult.userId
+					authResult.userId,
+					"firstName:",
+					authResult.firstName
 				);
-				if (!authResult.isLoggedIn && !authResult.userId) {
+				if (
+					pathname !== "/login" &&
+					pathname !== "/" &&
+					pathname !== "/register" &&
+					!authResult.isLoggedIn &&
+					!authResult.userId
+				) {
 					router.push("/login");
 				}
 			} else {
@@ -69,6 +85,10 @@ export default function AuthProvider({
 		setUserId: setUserId,
 		hasLoggedOut: hasLoggedOut,
 		justLoggedIn: justLoggedIn,
+		firstName: firstName,
+		setFirstName: setFirstName,
+		lastName: lastName,
+		setLastName: setLastName,
 	};
 
 	return (

@@ -12,7 +12,7 @@ const LoginForm: React.FC = () => {
 	const [password, setPassword] = useState<string>("");
 	const [error, setError] = useState<string>("");
 	const router = useRouter();
-	const { setIsLoggedIn, setUserId, justLoggedIn } = useAuth();
+	const { setIsLoggedIn, setUserId, justLoggedIn, setFirstName, setLastName } = useAuth();
 
 	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -27,6 +27,8 @@ const LoginForm: React.FC = () => {
 			const successData: LoginResponseSuccess = data as LoginResponseSuccess;
 			setIsLoggedIn(successData.user.isLoggedIn);
 			setUserId(successData.user.id);
+			setFirstName(successData.user.firstName);
+			setLastName(successData.user.lastName);
 			justLoggedIn.current = true;
 			router.push("/home");
 		} else {
