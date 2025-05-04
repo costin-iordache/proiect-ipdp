@@ -76,12 +76,14 @@ export async function checkAuth(): Promise<{
 }
 
 export async function registerUser(
+	fisrtName: string,
+	lastName: string,
 	email: string,
 	password: string
 	// confirmPassword?: string // Optional confirm password
 ): Promise<{ response?: Response; data?: RegisterResponse; error?: string }> {
 	try {
-		const bodyParams = new URLSearchParams({ email, password });
+		const bodyParams = new URLSearchParams({ fisrtName, lastName, email, password });
 		const response = await fetch("http://ipdp.local/register.php", {
 			method: "POST",
 			headers: {

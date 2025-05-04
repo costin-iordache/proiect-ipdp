@@ -1,11 +1,9 @@
-'use client'
-import GetStarted from "./landing-page/page";
+import LandingPageComp from './landing-page/page';
 
-export default function App() {
-
+export default function LandingPage() {
   return (
-    <div>
-      <GetStarted/>
+    <div >
+      <LandingPageComp/>
     </div>
   );
 }

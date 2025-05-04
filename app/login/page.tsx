@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { loginUser } from "@/backend/auth";
 import { useAuth } from "@/backend/authContext";
 import { useState } from "react";
+import Image from "next/image";
 import { LoginResponseSuccess, LoginResponseError } from "@/types/auth"; // Adjust import path
 
 const LoginForm: React.FC = () => {
@@ -42,7 +43,13 @@ const LoginForm: React.FC = () => {
 		<div>
 			<div className="layout-column justify-center align-center bg-white px-6 py-6 ">
 				<div className="layout-row justify-center align-center ">
-					<img src="/icons8-user-64.png" alt="logo" className="w-16 h-16" />
+					<Image
+						src="/logo.png"
+						alt="logo"
+						width={64}
+						height={64}
+						className="w-16 h-16"
+					/>
 				</div>
 				<div className="layout-row justify-center align-center">
 					<h1 className="layout-column text-4xl font-bold text-gray-800">
@@ -86,14 +93,6 @@ const LoginForm: React.FC = () => {
 								>
 									Password
 								</label>
-								<div className="text-sm">
-									<a
-										href="#"
-										className="font-semibold text-indigo-600 hover:text-indigo-500"
-									>
-										Forgot password?
-									</a>
-								</div>
 							</div>
 							<div className="mt-2">
 								<input

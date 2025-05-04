@@ -7,10 +7,12 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstName = $_POST['first_name'] ?? '';
+    $lastName = $_POST['last_name'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if (!empty($email) && !empty($password)) {
+    if (!empty($firstName) && !empty($lastName) && !empty($email) && !empty($password)) {
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
 
         try {
@@ -22,7 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['error' => 'Email already exists']);
                 exit;
             } else {
-                $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
+                $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
+                $stmt->bindParam(':first_name', $firstName);
+                $stmt->bindParam(':last_name', $lastName);
                 $stmt->bindParam(':email', $email);
                 $stmt->bindParam(':password', $hashedPassword);
 
