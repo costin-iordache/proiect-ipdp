@@ -4,11 +4,12 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: http://localhost:3000');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = $_POST['first_name'] ?? '';
-    $lastName = $_POST['last_name'] ?? '';
+    $firstName = $_POST['firstName'] ?? '';
+    $lastName = $_POST['lastName'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['error' => 'Registration failed: ' . $e->getMessage()]);
         }
     } else {
-        echo json_encode(['error' => 'Email and password are required']);
+        echo json_encode(['error' => 'All fields are required']);
     }
 
     $conn = null;
