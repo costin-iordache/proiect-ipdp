@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
 			<div className="layout-column justify-center align-center bg-white px-6 py-6 ">
 				<div className="layout-row justify-center align-center ">
 					<Image
-						src="/icons8-user-64.png"
+						src="/logo.png"
 						alt="logo"
 						width={64}
 						height={64}

@@ -30,22 +30,23 @@ export default function Sidebar() {
 	];
 
 	return (
-		<aside className="w-20 md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
-			<div className="space-y-8">
-				{menuItems.map((item, idx) => (
-					<div
-						key={idx}
-						className="p-3 hover:bg-purple-700 rounded-xl cursor-pointer"
-					>
-						{item.icon}
-					</div>
-				))}
-        <LogoutButton />
-			</div>
-
-			<button className="mb-4 text-xs bg-purple-700 px-2 py-1 rounded-lg">
-				Need help?
-			</button>
-		</aside>
+		<div>
+			<aside className="w-20 md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
+				<div className="space-y-8">
+					{menuItems.map((item, idx) => (
+						<div
+							key={idx}
+							className="p-3 hover:bg-purple-700 rounded-xl cursor-pointer"
+						>
+							{item.icon}
+						</div>
+					))}
+					<LogoutButton />
+				</div>
+				<button className="mb-4 text-xs bg-purple-700 px-2 py-1 rounded-lg">
+					Need help?
+				</button>
+			</aside>
+		</div>
 	);
 }
