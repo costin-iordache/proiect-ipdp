@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -13,7 +12,8 @@ const LoginForm: React.FC = () => {
 	const [password, setPassword] = useState<string>("");
 	const [error, setError] = useState<string>("");
 	const router = useRouter();
-	const { setIsLoggedIn, setUserId, justLoggedIn, setFirstName, setLastName } = useAuth();
+	const { setIsLoggedIn, setUserId, justLoggedIn, setFirstName, setLastName } =
+		useAuth();
 
 	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -27,10 +27,12 @@ const LoginForm: React.FC = () => {
 		if (success && (data as LoginResponseSuccess)?.success) {
 			const successData: LoginResponseSuccess = data as LoginResponseSuccess;
 			setIsLoggedIn(successData.user.isLoggedIn);
-			setUserId(successData.user.id);
+			setUserId(successData.user.userId);
 			setFirstName(successData.user.firstName);
 			setLastName(successData.user.lastName);
 			justLoggedIn.current = true;
+			localStorage.setItem("isLoggedIn", "true");
+			localStorage.setItem("userId", successData.user.userId.toString());
 			router.push("/home");
 		} else {
 			const error: LoginResponseError = data as LoginResponseError;

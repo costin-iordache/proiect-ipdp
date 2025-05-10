@@ -24,10 +24,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 }
                 if (password_verify($password, $user['password'])) {
+                    // $cookieLifetime = 3600 * 24 * 7;
+                    // session_set_cookie_params([
+                    //     'lifetime' => $cookieLifetime,
+                    //     'path' => '/',
+                    //     'domain' => '',
+                    //     'secure' => false,
+                    //     'httponly' => true,
+                    //     'samesite' => 'Lax'
+                    // ]);
                     session_start();
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['is_logged_in'] = true;
-                    $userData = [['userId' => $user['id']], 'firstName' => $user['first_name'], 'lastName' => $user['last_name']];
+                    // $_SESSION['user_id'] = $user['id'];
+                    // $_SESSION['is_logged_in'] = true;
+                    $userData = ['userId' => $user['id'], 'firstName' => $user['first_name'], 'lastName' => $user['last_name']];
                     echo json_encode(['success' => true, 'user' => $userData, 'isLoggedIn' => true]);
                 } else {
                     echo json_encode(['error' => 'Invalid credentials']);

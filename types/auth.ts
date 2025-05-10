@@ -1,7 +1,7 @@
 export interface LoginResponseSuccess {
 	success: boolean;
 	user: {
-		id: number;
+		userId: number;
 		firstName: string;
 		lastName: string;
 		isLoggedIn: boolean;

@@ -1,11 +1,15 @@
+'use client'
 import GetStarted from "@/app/components/GetStarted";
 import MySubscriptions from "@/app/components/MySubscriptions";
 import TotalSubscriptions from "@/app/components/TotalSubscriptions";
 import MonthOverview from "@/app/components/MonthOverview";
 import UpcomingPayments from "@/app/components/UpcomingPayments";
 import SearchBar from "@/app/components/SearchBar";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+    const router = useRouter();
+  
   return (
     <div>
       <div className="min-h-screen bg-gradient-to-br from-blue-500 to-white-500 text-gray-800 p-6">
@@ -15,6 +19,7 @@ export default function Home() {
             <GetStarted />
             <MySubscriptions />
             <TotalSubscriptions />
+            <button onClick={() => {router.push("/home/subsmanage");}}>subsmanage</button>
           </div>
           <div className="space-y-4">
             <MonthOverview />

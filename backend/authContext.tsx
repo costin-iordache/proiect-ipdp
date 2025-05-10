@@ -2,7 +2,7 @@
 // import Sidebar from "@/app/components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { checkAuth } from "@/backend/auth";
+// import { checkAuth } from "@/backend/auth";
 import { createContext, useContext } from "react";
 import Sidebar from "@/app/components/Sidebar";
 
@@ -36,48 +36,73 @@ export default function AuthProvider({
 	const justLoggedIn = useRef(false);
 
 	useEffect(() => {
-		const verifyAuth = async () => {
-			if (justLoggedIn.current) {
-				justLoggedIn.current = false;
-				return;
-			}
-			if (
-				(pathname !== "/login" &&
-					pathname !== "/" &&
-					pathname !== "/register") ||
-				!hasLoggedOut.current
-			) {
-				const authResult = await checkAuth();
-				setIsLoggedIn(authResult.isLoggedIn);
-				setUserId(authResult.userId);
-				setFirstName(authResult.firstName);
-				setLastName(authResult.lastName);
-				console.log(
+		if (
+			(pathname !== "/login" && pathname !== "/" && pathname !== "/register") ||
+			!hasLoggedOut.current
+		) {
+			const loggedIn = localStorage.getItem("isLoggedIn");
+			console.log(
 					"AuthProvider - isLoggedIn:",
-					authResult.isLoggedIn,
+					localStorage.getItem("isLoggedIn"),
 					"userId:",
-					authResult.userId,
-					"firstName:",
-					authResult.firstName
+					localStorage.getItem("userId"),
 				);
-				if (
-					pathname !== "/login" &&
-					pathname !== "/" &&
-					pathname !== "/register" &&
-					!authResult.isLoggedIn &&
-					!authResult.userId
-				) {
-					router.push("/login");
-				}
+			if (loggedIn === "true") {
+				setIsLoggedIn(true);
 			} else {
-				setIsLoggedIn(false);
-				setUserId(undefined);
-				hasLoggedOut.current = false;
 				router.push("/login");
 			}
-		};
-		verifyAuth();
-	}, [router, pathname]);
+		} else {
+			setIsLoggedIn(false);
+			setUserId(undefined);
+			hasLoggedOut.current = false;
+			router.push("/login");
+		}
+	}, [router]);
+
+	// useEffect(() => {
+	// 	const verifyAuth = async () => {
+	// 		if (justLoggedIn.current) {
+	// 			justLoggedIn.current = false;
+	// 			return;
+	// 		}
+	// 		if (
+	// 			(	pathname !== "/login" &&
+	// 				pathname !== "/" &&
+	// 				pathname !== "/register") ||
+	// 			!hasLoggedOut.current
+	// 		) {
+	// 			const authResult = await checkAuth();
+	// 			setIsLoggedIn(authResult.isLoggedIn);
+	// 			setUserId(authResult.userId);
+	// 			setFirstName(authResult.firstName);
+	// 			setLastName(authResult.lastName);
+	// 			console.log(
+	// 				"AuthProvider - isLoggedIn:",
+	// 				authResult.isLoggedIn,
+	// 				"userId:",
+	// 				authResult.userId,
+	// 				"firstName:",
+	// 				authResult.firstName
+	// 			);
+	// 			if (
+	// 				pathname !== "/login" &&
+	// 				pathname !== "/" &&
+	// 				pathname !== "/register" &&
+	// 				!authResult.isLoggedIn &&
+	// 				!authResult.userId
+	// 			) {
+	// 				router.push("/login");
+	// 			}
+	// 		} else {
+	// 			setIsLoggedIn(false);
+	// 			setUserId(undefined);
+	// 			hasLoggedOut.current = false;
+	// 			router.push("/login");
+	// 		}
+	// 	};
+	// 	verifyAuth();
+	// }, [router, pathname]);
 
 	const contextValue: AuthContextType = {
 		isLoggedIn: isLoggedIn,
