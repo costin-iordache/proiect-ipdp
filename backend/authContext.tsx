@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from "@/app/components/Sidebar";
+// import Sidebar from "@/app/components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { checkAuth } from "@/backend/auth";
@@ -94,7 +94,7 @@ export default function AuthProvider({
 	return (
 		<>
 			<AuthContext.Provider value={contextValue}>
-				<Sidebar />
+				{/* <Sidebar /> */}
 				<main className="flex-1 overflow-auto">{children}</main>
 			</AuthContext.Provider>
 		</>

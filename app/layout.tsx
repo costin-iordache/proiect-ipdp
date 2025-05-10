@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import AuthProvider  from "@/backend/authContext";
-
+import AuthProvider from "@/backend/authContext";
 
 export const metadata: Metadata = {
 	title: "SubWiz",
@@ -16,7 +15,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className="flex bg-purple-900 min-h-screen">
-				<AuthProvider >{children}</AuthProvider>
+				<main className="flex-1 overflow-auto">
+					<AuthProvider>{children}</AuthProvider>
+				</main>
 			</body>
 		</html>
 	);
