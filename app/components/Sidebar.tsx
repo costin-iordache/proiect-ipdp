@@ -31,8 +31,8 @@ export default function Sidebar() {
 
 	return (
 		<div>
-			<aside className="w-20 md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
-				<div className="space-y-8">
+			<aside className="w-20 h-full md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
+				<div className="space-y-8 justify-center items-center">
 					{menuItems.map((item, idx) => (
 						<div
 							key={idx}

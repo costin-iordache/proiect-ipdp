@@ -8,7 +8,7 @@ import SearchBar from "@/app/components/SearchBar";
 export default function Home() {
   return (
     <div>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white text-gray-800 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-white-500 text-gray-800 p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-4">
             <SearchBar />
