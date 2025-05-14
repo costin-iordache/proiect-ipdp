@@ -125,7 +125,7 @@ export default function AuthProvider({
 		<>
 			<AuthContext.Provider value={contextValue}>
 				{/* <main className="flex-1 overflow-auto">{children}</main> */}
-				<div className="flex">
+				<div className="flex bg-gradient-to-br from-blue-500 to-white-500 h-screen">
 					{!shouldHideLayout && (
 					<>
 						<Sidebar />

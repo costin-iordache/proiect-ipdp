@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
 
 	return (
 		<div>
-			<div className="layout-column justify-center align-center px-6 py-6 ">
+			<div className="layout-column justify-center align-center px-6 py-6">
 				<div className="border-3 border-gray-200 rounded-lg bg-white shadow-md p-6 max-w-sm mx-auto w-screen sm:w-full">
 
 					{/* LOGO */}
@@ -125,7 +125,7 @@ const LoginForm: React.FC = () => {
 							</div>
 						</form>
 
-						{/* REGISTER */}					
+						{/* REGISTER */}
 						<p className="mt-10 text-center text-sm/6 text-gray-500">
 							Not a member?{" "}
 							<a

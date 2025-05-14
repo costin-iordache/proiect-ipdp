@@ -1,14 +1,12 @@
 'use client'
 import GetStarted from "@/app/components/GetStarted";
 import MySubscriptions from "@/app/components/MySubscriptions";
-import TotalSubscriptions from "@/app/components/TotalSubscriptions";
+// import TotalSubscriptions from "@/app/components/TotalSubscriptions";
 import MonthOverview from "@/app/components/MonthOverview";
 import UpcomingPayments from "@/app/components/UpcomingPayments";
 import SearchBar from "@/app/components/SearchBar";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-    const router = useRouter();
   
   return (
     <div>
@@ -18,8 +16,6 @@ export default function Home() {
             <SearchBar />
             <GetStarted />
             <MySubscriptions />
-            <TotalSubscriptions />
-            <button onClick={() => {router.push("/home/subsmanage");}}>subsmanage</button>
           </div>
           <div className="space-y-4">
             <MonthOverview />
