@@ -35,7 +35,11 @@ function LogoutButton() {
   //   }
   // };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return (
+    <div className="p-3 hover:bg-purple-700 rounded-xl cursor-pointer">
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  )
 }
 
 export default LogoutButton;

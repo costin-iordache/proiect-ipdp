@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 // import { checkAuth } from "@/backend/auth";
 import { createContext, useContext } from "react";
+import Sidebar from "@/app/components/Sidebar";
 
 interface AuthContextType {
 	isLoggedIn: boolean;
@@ -116,11 +117,22 @@ export default function AuthProvider({
 		setLastName: setLastName,
 	};
 
+	const hiddenLayoutRoutes = ['/login', '/register'];
+
+	const shouldHideLayout = hiddenLayoutRoutes.includes(pathname);
+
 	return (
 		<>
 			<AuthContext.Provider value={contextValue}>
-				{/* <Sidebar /> */}
-				<main className="flex-1 overflow-auto">{children}</main>
+				{/* <main className="flex-1 overflow-auto">{children}</main> */}
+				<div className="flex bg-gradient-to-br from-blue-500 to-white-500 h-screen">
+					{!shouldHideLayout && (
+					<>
+						<Sidebar />
+					</>
+				)}
+					<div className="flex-1 overflow-auto">{children}</div>
+				</div>
 			</AuthContext.Provider>
 		</>
 	);

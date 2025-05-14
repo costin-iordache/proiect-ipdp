@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
+import Image from "next/image";
 
 export default function Sidebar() {
 	const router = useRouter();
@@ -30,22 +31,34 @@ export default function Sidebar() {
 	];
 
 	return (
-		<aside className="w-20 md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
-			<div className="space-y-8">
-				{menuItems.map((item, idx) => (
-					<div
-						key={idx}
-						className="p-3 hover:bg-purple-700 rounded-xl cursor-pointer"
-					>
-						{item.icon}
-					</div>
-				))}
-        <LogoutButton />
-			</div>
+		<div>
+			<aside className="w-24 h-full md:w-24 bg-[#1a152d] text-white py-6 flex flex-col items-center justify-between shadow-xl">
+				<div className="p-3 rounded-xl cursor-pointer">
+					<Image
+						src="/logo.png"
+						alt="SubWiz Logo"
+						height={64}
+						width={64}
+						className="w-16 h-16 rounded-full"
+						onClick={(handleHomeClick)}
+					/>
+				</div>
+				
+				<div className="space-y-8 justify-center items-center">
+					{menuItems.map((item, idx) => (
+						<div
+							key={idx}
+							className="p-3 hover:bg-purple-700 rounded-xl cursor-pointer"
+						>
+							{item.icon}
+						</div>
+					))}
+				</div>
 
-			<button className="mb-4 text-xs bg-purple-700 px-2 py-1 rounded-lg">
-				Need help?
-			</button>
-		</aside>
+				<div className="flex flex-col items-center justify-center">
+					<LogoutButton />
+				</div>
+			</aside>
+		</div>
 	);
 }
