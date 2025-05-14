@@ -14,6 +14,7 @@ export interface LoginResponseError {
 
 export interface RegisterResponseSuccess {
 	success: boolean;
+	message: string;
 	confirmation_link?: string;
 }
 

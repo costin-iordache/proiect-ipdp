@@ -20,6 +20,27 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const getAuthData = () => {
+	const storedData = localStorage.getItem("authData");
+	if (!storedData) {
+		return null;
+	}
+	try {
+		const data = JSON.parse(storedData);
+		const now = new Date().getTime();
+		if (now > data.expiration) {
+			console.log("Auth data expired, clearing localStorage.");
+			localStorage.removeItem("authData");
+			return null;
+		}
+		return data;
+	} catch (e) {
+		console.error("Failed to parse auth data from localStorage:", e);
+		localStorage.removeItem("authData");
+		return null;
+	}
+};
+
 export default function AuthProvider({
 	children,
 }: {
@@ -35,21 +56,32 @@ export default function AuthProvider({
 	const justLoggedIn = useRef(false);
 
 	useEffect(() => {
+		const authData = getAuthData();
+		if (authData) {
+			console.log(
+				"AuthProvider - isLoggedIn:",
+				authData.isLoggedIn ? "true" : undefined,
+				"userId:",
+				authData.userId ? authData.userId : undefined,
+				"expiration:",
+				authData.expiration ? authData.expiration : undefined
+			);
+		} else {
+			console.log("AuthProvider - No auth data found in localStorage.");
+		}
 		if (
 			(pathname !== "/login" && pathname !== "/" && pathname !== "/register") ||
 			!hasLoggedOut.current
 		) {
-			const loggedIn = localStorage.getItem("isLoggedIn");
-			console.log(
-					"AuthProvider - isLoggedIn:",
-					localStorage.getItem("isLoggedIn"),
-					"userId:",
-					localStorage.getItem("userId"),
-				);
-			if (loggedIn === "true") {
-				setIsLoggedIn(true);
-			} else {
-				router.push("/login");
+			if (authData) {
+				if (authData?.isLoggedIn === "true") {
+					setIsLoggedIn(true);
+					setUserId(authData.userId);
+				} else {
+					setIsLoggedIn(false);
+					setUserId(undefined);
+					router.push("/login");
+				}
 			}
 		} else {
 			setIsLoggedIn(false);
@@ -57,7 +89,7 @@ export default function AuthProvider({
 			hasLoggedOut.current = false;
 			router.push("/login");
 		}
-	}, [router]);
+	}, [pathname, router]);
 
 	// useEffect(() => {
 	// 	const verifyAuth = async () => {

@@ -31,8 +31,12 @@ const LoginForm: React.FC = () => {
 			setFirstName(successData.user.firstName);
 			setLastName(successData.user.lastName);
 			justLoggedIn.current = true;
-			localStorage.setItem("isLoggedIn", "true");
-			localStorage.setItem("userId", successData.user.userId.toString());
+			const dataToStore = {
+					isLoggedIn: "true",
+					userId: successData.user.userId,
+					expiration: new Date().getTime() + 2 * 60 * 60 * 1000,
+				};
+			localStorage.setItem("authData", JSON.stringify(dataToStore));
 			router.push("/home");
 		} else {
 			const error: LoginResponseError = data as LoginResponseError;

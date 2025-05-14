@@ -8,8 +8,7 @@ function LogoutButton() {
   // const { isLoggedIn, userId, setIsLoggedIn, setUserId, hasLoggedOut } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userId');
+    localStorage.removeItem("authData");
     router.push('/login');
   };
 

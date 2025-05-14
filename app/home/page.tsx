@@ -6,6 +6,7 @@ import MonthOverview from "@/app/components/MonthOverview";
 import UpcomingPayments from "@/app/components/UpcomingPayments";
 import SearchBar from "@/app/components/SearchBar";
 import { useRouter } from "next/navigation";
+import LogoutButton from "../components/LogoutButton";
 
 export default function Home() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function Home() {
             <MySubscriptions />
             <TotalSubscriptions />
             <button onClick={() => {router.push("/home/subsmanage");}}>subsmanage</button>
+            <LogoutButton />
           </div>
           <div className="space-y-4">
             <MonthOverview />
