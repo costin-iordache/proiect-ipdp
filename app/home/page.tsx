@@ -5,8 +5,6 @@ import MySubscriptions from "@/app/components/MySubscriptions";
 import MonthOverview from "@/app/components/MonthOverview";
 import UpcomingPayments from "@/app/components/UpcomingPayments";
 import SearchBar from "@/app/components/SearchBar";
-import { useRouter } from "next/navigation";
-import LogoutButton from "../components/LogoutButton";
 
 export default function Home() {
   

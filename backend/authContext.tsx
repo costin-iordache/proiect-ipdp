@@ -150,7 +150,7 @@ export default function AuthProvider({
 		setLastName: setLastName,
 	};
 
-	const hiddenLayoutRoutes = ['/login', '/register'];
+	const hiddenLayoutRoutes = ['/login', '/register', '/'];
 
 	const shouldHideLayout = hiddenLayoutRoutes.includes(pathname);
 
