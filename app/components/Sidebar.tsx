@@ -14,20 +14,29 @@ export default function Sidebar() {
 	const router = useRouter();
 
 	const handleUserProfileClick = () => {
-		router.push("/login");
+		router.push("/account-settings");
 	};
 	const handleHomeClick = () => {
 		router.push("/home");
 	};
+	const handleChartClick = () => {
+		router.push("/all-subscriptions");
+	};
+	const handleBellClick = () => {
+		router.push("/alerts");
+	};
 
 	const menuItems = [
+		{
+			icon: <HomeIcon className="w-6 h-6" onClick={handleHomeClick} />,
+			label: "Dashboard",
+		},
 		{
 			icon: <UserIcon className="w-6 h-6" onClick={handleUserProfileClick} />,
 			label: "Profile",
 		},
-		{ icon: <HomeIcon className="w-6 h-6" onClick={handleHomeClick} />, label: "Dashboard" },
-		{ icon: <ChartBarIcon className="w-6 h-6" />, label: "Stats" },
-		{ icon: <BellIcon className="w-6 h-6" />, label: "Alerts" },
+		{ icon: <ChartBarIcon className="w-6 h-6" onClick={handleChartClick} />, label: "Stats" },
+		{ icon: <BellIcon className="w-6 h-6" onClick={handleBellClick} />, label: "Alerts" },
 	];
 
 	return (
@@ -40,10 +49,10 @@ export default function Sidebar() {
 						height={64}
 						width={64}
 						className="w-16 h-16 rounded-full"
-						onClick={(handleHomeClick)}
+						onClick={handleHomeClick}
 					/>
 				</div>
-				
+
 				<div className="space-y-8 justify-center items-center">
 					{menuItems.map((item, idx) => (
 						<div

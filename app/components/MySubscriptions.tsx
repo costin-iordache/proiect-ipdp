@@ -46,7 +46,10 @@ export default function MySubscriptions() {
 				const data = await response.json();
 
 				if (data.success) {
-					setSubscriptions(data.subscriptions);
+					const sortedSubscriptions = data.subscriptions.sort((a: Subscription, b: Subscription) => {
+                        return new Date(a.billing_date).getTime() - new Date(b.billing_date).getTime();
+                    });
+					setSubscriptions(sortedSubscriptions);
 				} else {
 					setError(data.error || "Failed to fetch subscriptions.");
 				}
@@ -80,7 +83,7 @@ export default function MySubscriptions() {
 
 	return (
 		<div className="bg-[#1e1b2e] text-white rounded-2xl p-4 shadow-md">
-			<h3 className="text-lg font-semibold mb-2">{activeCount} active</h3>
+			<h3 className="text-lg font-semibold mb-2">{activeCount} active subscription{activeCount!==1 && "s"} </h3>
 			{subscriptions.map((sub) => (
 				<div
 					key={sub.id}
@@ -91,13 +94,14 @@ export default function MySubscriptions() {
 						{new Date(sub.billing_date) < new Date() ? "Due" : "Upcoming"}
 					</span>
 					<span className="text-sm text-purple-300">
+						Next bill:{" "}
 						{new Date(sub.billing_date).toDateString()}
 					</span>
 				</div>
 			))}
-			<button className="mt-4 bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-500">
+			{activeCount!==0 && <button className="mt-4 bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-500">
 				View all subscriptions
-			</button>
+			</button>}
 		</div>
 	);
 }
