@@ -20,7 +20,7 @@ export default function Sidebar() {
 		router.push("/home");
 	};
 	const handleChartClick = () => {
-		router.push("/all-subscriptions");
+		router.push("home/all-subscriptions");
 	};
 	const handleBellClick = () => {
 		router.push("/alerts");
@@ -35,8 +35,14 @@ export default function Sidebar() {
 			icon: <UserIcon className="w-6 h-6" onClick={handleUserProfileClick} />,
 			label: "Profile",
 		},
-		{ icon: <ChartBarIcon className="w-6 h-6" onClick={handleChartClick} />, label: "Stats" },
-		{ icon: <BellIcon className="w-6 h-6" onClick={handleBellClick} />, label: "Alerts" },
+		{
+			icon: <ChartBarIcon className="w-6 h-6" onClick={handleChartClick} />,
+			label: "Stats",
+		},
+		{
+			icon: <BellIcon className="w-6 h-6" onClick={handleBellClick} />,
+			label: "Alerts",
+		},
 	];
 
 	return (

@@ -1,4 +1,6 @@
 'use client'
+import React from "react";
+
 import GetStarted from "@/app/components/GetStarted";
 import MySubscriptions from "@/app/components/MySubscriptions";
 // import TotalSubscriptions from "@/app/components/TotalSubscriptions";
@@ -7,6 +9,7 @@ import UpcomingPayments from "@/app/components/UpcomingPayments";
 import SearchBar from "@/app/components/SearchBar";
 
 export default function Home() {
+
   
   return (
     <div>

@@ -1,9 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { submitSub } from "@/backend/submitSub";
+import { submitSub } from "@/backend/subs";
 import {
-	SubscriptionResponseError,
-	SubscriptionResponseSuccess,
+	SubmitSubscriptionResponseError,
+	SubmitSubscriptionResponseSuccess,
 } from "@/types/subResponse";
 import { useState, useEffect } from "react";
 
@@ -22,18 +21,18 @@ const predefinedCurrencies = ["RON", "EUR", "USD", "GBP"];
 
 const frequencyOptions = [
 	{ label: "Lunar", value: "monthly" },
-	{ label: "Anual", value: "annually" },
+	{ label: "Anual", value: "yearly" },
 ];
 
 function calculateEndDate(start: string, frequency: string): string {
 	if (!start) return "";
 	const date = new Date(start);
 	if (frequency === "monthly") date.setMonth(date.getMonth() + 1);
-	if (frequency === "annually") date.setFullYear(date.getFullYear() + 1);
+	if (frequency === "yearly") date.setFullYear(date.getFullYear() + 1);
 	return date.toISOString().split("T")[0];
 }
 
-export default function AddSubscription() {
+export default function SubForm() {
 	const [platform, setPlatform] = useState(predefinedApps[0]);
 	const [customPlatform, setCustomPlatform] = useState("");
 	const [startDate, setStartDate] = useState("");
@@ -42,7 +41,6 @@ export default function AddSubscription() {
 	const [frequency, setFrequency] = useState("monthly");
 	const [currency, setCurrency] = useState("RON");
 	const [error, setError] = useState<string>("");
-	const router = useRouter();
 
 	useEffect(() => {
 		if (startDate && frequency) {
@@ -68,19 +66,21 @@ export default function AddSubscription() {
 				);
 				if (error) {
 					setError(error);
-					console.error("Error during registration:", error);
+					console.error("Error during sub adding:", error);
 					return;
 				}
-				if (response?.ok && (data as SubscriptionResponseSuccess)?.success) {
-					const successData: SubscriptionResponseSuccess =
-						data as SubscriptionResponseSuccess;
-					console.log("Registration successful:", successData);
-					router.push("/home");
+				if (
+					response?.ok &&
+					(data as SubmitSubscriptionResponseSuccess)?.success
+				) {
+					const successData: SubmitSubscriptionResponseSuccess =
+						data as SubmitSubscriptionResponseSuccess;
+					console.log("Sub added successful:", successData);
 				} else {
-					const errorData: SubscriptionResponseError =
-						data as SubscriptionResponseError;
-					setError(errorData?.error || "Registration failed");
-					console.error("Registration failed:", errorData);
+					const errorData: SubmitSubscriptionResponseError =
+						data as SubmitSubscriptionResponseError;
+					setError(errorData?.error || "Sub add failed");
+					console.error("Sub add failed:", errorData);
 				}
 			} else {
 				setError("User ID not found");
@@ -90,24 +90,24 @@ export default function AddSubscription() {
 	};
 
 	return (
-		<div className="max-w-md mx-auto mt-10 bg-white shadow-xl rounded-2xl p-6">
+		<div className="max-w-md mx-auto mt-10 p-4 w-100 bg-white shadow-xl rounded-2xl">
 			<h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-				Adaugă o Subscriptie
+				Add Subscription
 			</h2>
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit} className="space-y-4 p-4">
 				{/* App Selection */}
 				<div>
 					<label
 						htmlFor="platform"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Alege aplicația
+						Choose App
 					</label>
 					<select
 						id="platform"
 						value={platform}
 						onChange={(e) => setPlatform(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 					>
 						{predefinedApps.map((app) => (
 							<option key={app} value={app}>
@@ -123,14 +123,14 @@ export default function AddSubscription() {
 							htmlFor="customPlatform"
 							className="block text-sm font-medium text-gray-700"
 						>
-							Nume aplicație personalizată
+							App Name
 						</label>
 						<input
 							type="text"
 							id="customPlatform"
 							value={customPlatform}
 							onChange={(e) => setCustomPlatform(e.target.value)}
-							className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+							className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 							required
 						/>
 					</div>
@@ -142,14 +142,14 @@ export default function AddSubscription() {
 						htmlFor="startDate"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Data de început
+						Starting Date
 					</label>
 					<input
 						type="date"
 						id="startDate"
 						value={startDate}
 						onChange={(e) => setStartDate(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 						required
 					/>
 				</div>
@@ -160,13 +160,13 @@ export default function AddSubscription() {
 						htmlFor="frequency"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Frecvență
+						Frequency
 					</label>
 					<select
 						id="frequency"
 						value={frequency}
 						onChange={(e) => setFrequency(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 					>
 						{frequencyOptions.map((option) => (
 							<option key={option.value} value={option.value}>
@@ -182,14 +182,14 @@ export default function AddSubscription() {
 						htmlFor="billingDate"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Data de plata
+						Billing Date
 					</label>
 					<input
 						type="date"
 						id="billingDate"
 						value={billingDate}
 						onChange={(e) => setBillingDate(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 						required
 					/>
 				</div>
@@ -200,14 +200,14 @@ export default function AddSubscription() {
 						htmlFor="price"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Preț
+						Price
 					</label>
 					<input
 						type="number"
 						id="price"
 						value={price}
 						onChange={(e) => setPrice(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 						min="0"
 						step="0.01"
 						required
@@ -220,13 +220,13 @@ export default function AddSubscription() {
 						htmlFor="currency"
 						className="block text-sm font-medium text-gray-700"
 					>
-						Moneda
+						Currency
 					</label>
 					<select
 						id="currency"
 						value={currency}
 						onChange={(e) => setCurrency(e.target.value)}
-						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
+						className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 text-gray-700"
 					>
 						{predefinedCurrencies.map((app) => (
 							<option key={app} value={app}>
@@ -235,11 +235,14 @@ export default function AddSubscription() {
 						))}
 					</select>
 				</div>
+				{error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+				{/* Submit Button */}
 				<button
 					type="submit"
 					className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+					onClick={handleSubmit}
 				>
-					Adaugă abonament
+					Add Subscription
 				</button>
 			</form>
 		</div>
