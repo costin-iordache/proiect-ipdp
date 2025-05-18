@@ -71,7 +71,7 @@ export default function AllSubscriptions() {
 			{subscriptions.map((subscription) => (
 				<div
 					key={subscription.id}
-					className="p-2 mb-3 backdrop-blur-md bg-white/30 border border-white/40 shadow-lg rounded-2xl p-4 text-gray-900"
+					className="mb-3 backdrop-blur-md bg-white/30 border border-white/40 shadow-lg rounded-2xl p-4 text-gray-900"
 				>
 					<h2 className="text-lg font-semibold">{subscription.platform}</h2>
 					<p>
