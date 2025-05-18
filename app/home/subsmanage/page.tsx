@@ -22,14 +22,14 @@ const predefinedCurrencies = ["RON", "EUR", "USD", "GBP"];
 
 const frequencyOptions = [
 	{ label: "Lunar", value: "monthly" },
-	{ label: "Anual", value: "yearly" },
+	{ label: "Anual", value: "annually" },
 ];
 
 function calculateEndDate(start: string, frequency: string): string {
 	if (!start) return "";
 	const date = new Date(start);
 	if (frequency === "monthly") date.setMonth(date.getMonth() + 1);
-	if (frequency === "yearly") date.setFullYear(date.getFullYear() + 1);
+	if (frequency === "annually") date.setFullYear(date.getFullYear() + 1);
 	return date.toISOString().split("T")[0];
 }
 

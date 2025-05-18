@@ -1,7 +1,7 @@
 <?php
-$servername = "mysql:host=localhost;dbname=proiect_ipdp";
+$servername = "mysql:host=db;dbname=proiect_ipdp";
 $username = "root";
-$password = "";
+$password = "123";
 $conn = null;
 
 try {

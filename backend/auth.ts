@@ -57,7 +57,7 @@ export async function checkAuth(): Promise<{
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include", // send cookies with request
+			credentials: "include",
 		});
 
 		if (response.ok) {
@@ -123,7 +123,6 @@ export async function registerUser(
 				console.error("Registration failed: Something went wrong");
 			}
 		}
-		// Optional redirect to "check your email" page
 		return { response, data };
 	} catch (error) {
 		console.error("Error during fetch in registerUser:", error);
@@ -156,7 +155,7 @@ export async function logoutUser(): Promise<{
 			errorMessage = error.message;
 			console.error("Error during logout fetch:", errorMessage);
 		} else {
-			console.error("Error during logout fetch:", error); // Log the unknown error
+			console.error("Error during logout fetch:", error);
 		}
 		return { success: false, error: errorMessage };
 	}
