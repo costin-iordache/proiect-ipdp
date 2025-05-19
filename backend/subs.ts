@@ -3,8 +3,10 @@ import {
 	SubmitSubscriptionResponseError,
 	FetchSubscriptionsResponse,
 	DeleteSubscriptionResponse,
-    FetchSubscriptionsResponseSuccess,
-    FetchSubscriptionsResponseError,
+	FetchSubscriptionsResponseSuccess,
+	FetchSubscriptionsResponseError,
+	EditSubscriptionResponse,
+	EditSubscriptionParams,
 } from "@/types/subResponse";
 
 export async function submitSub(
@@ -64,7 +66,18 @@ export async function submitSub(
 export async function fetchSubscriptions(
 	setLoading: (loading: boolean) => void,
 	setError: (error: string | null) => void,
-	setSubscriptions: (subscriptions: []) => void
+	setSubscriptions: (
+		subscriptions: {
+			id: number;
+			user_id: number;
+			platform: string;
+			start_date: string;
+			billing_date: string;
+			billing_frequency: string;
+			price: string;
+			currency: string;
+		}[]
+	) => void
 ): Promise<{
 	response?: Response;
 	data?: FetchSubscriptionsResponse;
@@ -98,8 +111,38 @@ export async function fetchSubscriptions(
 		const data: FetchSubscriptionsResponse = await response.json();
 
 		if (data.success) {
-            const successData = data as FetchSubscriptionsResponseSuccess;
-			setSubscriptions(successData.subscriptions);
+			const successData = data as FetchSubscriptionsResponseSuccess;
+			setSubscriptions(
+				successData.subscriptions.sort(
+					(
+						a: {
+							id: number;
+							user_id: number;
+							platform: string;
+							start_date: string;
+							billing_date: string;
+							billing_frequency: string;
+							price: string;
+							currency: string;
+						},
+						b: {
+							id: number;
+							user_id: number;
+							platform: string;
+							start_date: string;
+							billing_date: string;
+							billing_frequency: string;
+							price: string;
+							currency: string;
+						}
+					) => {
+						return (
+							new Date(a.billing_date).getTime() -
+							new Date(b.billing_date).getTime()
+						);
+					}
+				)
+			);
 			return { response, data };
 		} else {
 			const errorData = data as FetchSubscriptionsResponseError;
@@ -156,3 +199,29 @@ export async function handleDeleteSub(
 		setLoading(false);
 	}
 }
+
+export const editSubscription = async (
+	subscriptionData: EditSubscriptionParams
+): Promise<{
+	response?: Response;
+	data?: EditSubscriptionResponse;
+	error?: string;
+}> => {
+	try {
+		const response = await fetch("http://ipdp.local/editSub.php", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(subscriptionData),
+		});
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		const data: EditSubscriptionResponse = await response.json();
+		return { response, data };
+	} catch (error) {
+		const errorMessage = `Failed to edit subscription: ${error}`;
+		return { error: errorMessage };
+	}
+};

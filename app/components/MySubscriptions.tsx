@@ -41,13 +41,14 @@ export default function MySubscriptions() {
 	}
 
 	const activeCount = subscriptions.length;
+	const displayedSubscriptions = subscriptions.slice(0, 5);
 
 	return (
 		<div className="bg-[#1e1b2e] text-white rounded-2xl p-4 shadow-md">
 			<h3 className="text-lg font-semibold mb-2">
 				{activeCount} active subscription{activeCount !== 1 && "s"}
 			</h3>
-			{subscriptions.map((sub) => (
+			{displayedSubscriptions.map((sub) => (
 				<div
 					key={sub.id}
 					className="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0"

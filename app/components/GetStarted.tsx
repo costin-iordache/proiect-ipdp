@@ -10,7 +10,6 @@ export default function GetStarted() {
 	const { firstName, lastName } = useAuth();
   	const [isOpen, setIsOpen] = React.useState(false);
 
-
 	return (
 		<div className="p-6 bg-gradient-to-r from-purple-900 to-purple-700 rounded-2xl shadow-lg text-white">
 			<h2 className="text-2xl font-bold mb-2">
@@ -25,7 +24,7 @@ export default function GetStarted() {
 			{
 				isOpen && (
 					<Modal onClose={() => setIsOpen(false)}>
-						<SubForm/>
+						<SubForm />
 					</Modal>
 				)
 			}

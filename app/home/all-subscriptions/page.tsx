@@ -1,10 +1,9 @@
 "use client";
-
-// import Modal from "@/app/components/Modal";
-// import SubForm from "@/app/components/SubForm";
 import { useState, useEffect } from "react";
 import { fetchSubscriptions, handleDeleteSub } from "@/backend/subs";
-
+import Modal from "@/app/components/Modal";
+import SubForm from "@/app/components/SubForm";
+import EditSubForm from "@/app/components/EditSub";
 interface Subscription {
 	id: number;
 	user_id: number;
@@ -19,11 +18,27 @@ interface Subscription {
 export default function AllSubscriptions() {
 	const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 	const [isOpen, setIsOpen] = useState(false);
-	const [currentSub, setCurrentSub] = useState<number | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+	const [currentSubscriptionBeingEdited, setCurrentSubscriptionBeingEdited] =
+		useState<Subscription | null>(null);
 
-	console.log(isOpen, currentSub);
+	const handleCloseEditModal = () => {
+		setIsEditModalOpen(false);
+		setCurrentSubscriptionBeingEdited(null);
+	};
+
+	const handleSubscriptionUpdated = (updatedSubscription: Subscription) => {
+		console.log("Updated Subscription received:", updatedSubscription);
+		setSubscriptions((prevSubs) =>
+			prevSubs.map((sub) =>
+				sub.id === updatedSubscription.id ? updatedSubscription : sub
+			)
+		);
+		handleCloseEditModal();
+		fetchSubscriptions(setLoading, setError, setSubscriptions);
+	};
 
 	async function handleDelete(subId: number) {
 		handleDeleteSub(subId, setLoading, setError);
@@ -68,6 +83,17 @@ export default function AllSubscriptions() {
 					No active subscriptions.
 				</div>
 			)}
+			<button
+				className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300"
+				onClick={() => setIsOpen(true)}
+			>
+				+ Add Subscription
+			</button>
+			{isOpen && (
+				<Modal onClose={() => setIsOpen(false)}>
+					<SubForm />
+				</Modal>
+			)}
 			{subscriptions.map((subscription) => (
 				<div
 					key={subscription.id}
@@ -83,8 +109,8 @@ export default function AllSubscriptions() {
 					<button
 						className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
 						onClick={() => {
-							setCurrentSub(subscription.id);
-							setIsOpen(true);
+							setCurrentSubscriptionBeingEdited(subscription);
+							setIsEditModalOpen(true);
 						}}
 					>
 						Edit
@@ -98,6 +124,16 @@ export default function AllSubscriptions() {
 					</button>
 				</div>
 			))}
+			{isEditModalOpen && currentSubscriptionBeingEdited && (
+				<Modal onClose={handleCloseEditModal}>
+					<h2>Edit Subscription</h2>
+					<EditSubForm
+						initialSubscription={currentSubscriptionBeingEdited}
+						onSubscriptionUpdated={handleSubscriptionUpdated}
+						onClose={handleCloseEditModal}
+					/>
+				</Modal>
+			)}
 		</div>
 	);
 }

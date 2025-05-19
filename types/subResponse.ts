@@ -37,3 +37,36 @@ export interface DeleteSubscriptionResponseError {
 export type DeleteSubscriptionResponse =
     | DeleteSubscriptionResponseSuccess
     | DeleteSubscriptionResponseError;
+
+export interface EditSubscriptionResponseSuccess {
+    success: true;
+    message: string;
+	updatedSubscription: Subscription;
+}
+
+export interface EditSubscriptionResponseError {
+    error: string;
+}
+
+export type EditSubscriptionResponse = EditSubscriptionResponseSuccess | EditSubscriptionResponseError;
+
+export interface EditSubscriptionParams {
+    id: number;
+    userId: number;
+    platform: string;
+    startDate: string;
+    billingDate: string;
+    billingFrequency: string;
+    price: string;
+    currency: string;
+}
+export interface Subscription {
+    id: number;
+    platform: string;
+    start_date: string;
+    billing_date: string;
+    billing_frequency: string;
+    price: string;
+    currency: string;
+    user_id: number;
+}
