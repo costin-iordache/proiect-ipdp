@@ -1,26 +1,73 @@
 // components/UpcomingPayments.tsx
-export default function UpcomingPayments() {
-  const payments = [
-    { day: 2, title: "Subscription renewal alert", time: "10:00–11:30" },
-    { day: 8, title: "Payment Due", time: "11:00–12:30" },
-    { day: 11, title: "Subscription upgrade", time: "10:00–11:30" },
-    { day: 23, title: "Bill payment alert", time: "10:00–11:30" },
-    { day: 27, title: "Subscription Due", time: "10:00–11:30" },
-  ];
+"use client";
+import { useState, useEffect } from "react";
+import { fetchSubscriptions } from "@/backend/subs";
+import { Subscription } from "@/types/subResponse";
 
-  return (
-    <div className="bg-[#1e1b2e] text-white p-4 rounded-2xl">
-      <h4 className="mb-3 font-semibold">Upcoming payments this month</h4>
-      {payments.map((item, idx) => (
-        <div key={idx} className="mb-2 flex justify-between">
-          <span className="font-bold text-purple-400">{item.day}</span>
-          <span>{item.title}</span>
-          <span className="text-sm text-gray-400">{item.time}</span>
-        </div>
-      ))}
-      <button className="mt-4 bg-purple-600 px-4 py-2 rounded-md hover:bg-purple-500">
-        View full list
-      </button>
-    </div>
-  );
+export default function UpcomingPayments() {
+	const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		fetchSubscriptions(setLoading, setError, setSubscriptions);
+	}, []);
+
+	if (loading) {
+		return (
+			<div className="bg-[#1e1b2e] text-white rounded-2xl p-4 shadow-md">
+				Loading subscriptions...
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className="bg-[#1e1b2e] text-white rounded-2xl p-4 shadow-md">
+				Error loading subscriptions: {error}
+			</div>
+		);
+	}
+
+	const now = new Date();
+
+	let upcomingThisMonth = 0;
+	let dueCount = 0;
+	let upcomingIn3Days = 0;
+
+	subscriptions.forEach((sub) => {
+		const billingDate = new Date(sub.billing_date);
+		if (
+			billingDate.getFullYear() === now.getFullYear() &&
+			billingDate.getMonth() === now.getMonth()
+		) {
+			upcomingThisMonth++;
+		}
+		if (billingDate < now) {
+			dueCount++;
+		}
+		const diffDays = Math.ceil(
+			(billingDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+		);
+		if (diffDays >= 0 && diffDays <= 3) {
+			upcomingIn3Days++;
+		}
+	});
+
+	return (
+		<div className="bg-[#1e1b2e] text-white p-4 rounded-2xl">
+			<h4 className="mb-3 font-semibold">Payments this month</h4>
+			<div className="mb-4 flex flex-col gap-1">
+				<span>
+					<strong>{dueCount}</strong> due
+				</span>
+				<span>
+					<strong>{upcomingIn3Days}</strong> upcoming in 3 days or less
+				</span>
+				<span>
+					<strong>{upcomingThisMonth}</strong> upcoming
+				</span>
+			</div>
+		</div>
+	);
 }

@@ -51,13 +51,13 @@ export default function MySubscriptions() {
 			{displayedSubscriptions.map((sub) => (
 				<div
 					key={sub.id}
-					className="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0"
+					className="grid grid-cols-3 items-center py-2 border-b border-gray-700 last:border-b-0"
 				>
-					<span>{sub.platform}</span>
-					<span className="text-sm text-purple-300">
+					<span className="justify-self-start">{sub.platform}</span>
+					<span className="flex items-center justify-center text-sm text-purple-300 h-8">
 						{new Date(sub.billing_date) < new Date() ? "Due" : "Upcoming"}
 					</span>
-					<span className="text-sm text-purple-300">
+					<span className="justify-self-end text-sm text-purple-300">
 						{new Date(sub.billing_date).toDateString()}
 					</span>
 				</div>
