@@ -24,3 +24,15 @@ export interface RegisterResponseError {
 
 export type RegisterResponse = RegisterResponseSuccess | RegisterResponseError;
 export type LoginResponse = LoginResponseSuccess | LoginResponseError;
+
+
+export interface UpdatePasswordResponseSuccess{
+	success: boolean;
+	message: string;
+}
+
+export interface UpdatePasswordResponseError{
+	error: string;
+}
+
+export type UpdatePasswordResponse = UpdatePasswordResponseSuccess | UpdatePasswordResponseError;

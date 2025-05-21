@@ -5,6 +5,9 @@ import {
 	RegisterResponse,
 	RegisterResponseError,
 	RegisterResponseSuccess,
+	UpdatePasswordResponse,
+	UpdatePasswordResponseError,
+	UpdatePasswordResponseSuccess,
 } from "@/types/auth";
 
 export async function loginUser(
@@ -54,7 +57,7 @@ export async function checkAuth(): Promise<{
 			headers: {
 				"Content-Type": "application/json",
 			},
-			credentials: "include", // send cookies with request
+			credentials: "include",
 		});
 
 		if (response.ok) {
@@ -83,7 +86,12 @@ export async function registerUser(
 	// confirmPassword?: string // Optional confirm password
 ): Promise<{ response?: Response; data?: RegisterResponse; error?: string }> {
 	try {
-		const bodyParams = new URLSearchParams({ firstName, lastName, email, password });
+		const bodyParams = new URLSearchParams({
+			firstName,
+			lastName,
+			email,
+			password,
+		});
 		const response = await fetch("http://ipdp.local/register.php", {
 			method: "POST",
 			headers: {
@@ -115,7 +123,6 @@ export async function registerUser(
 				console.error("Registration failed: Something went wrong");
 			}
 		}
-		// Optional redirect to "check your email" page
 		return { response, data };
 	} catch (error) {
 		console.error("Error during fetch in registerUser:", error);
@@ -148,8 +155,54 @@ export async function logoutUser(): Promise<{
 			errorMessage = error.message;
 			console.error("Error during logout fetch:", errorMessage);
 		} else {
-			console.error("Error during logout fetch:", error); // Log the unknown error
+			console.error("Error during logout fetch:", error);
 		}
 		return { success: false, error: errorMessage };
+	}
+}
+
+export async function updatePassword(
+	userId: string,
+	currentPassword: string,
+	newPassword: string
+): Promise<{
+	response?: Response;
+	data?: UpdatePasswordResponse;
+	error?: string;
+}> {
+	try {
+		const bodyParams = new URLSearchParams({
+			userId,
+			currentPassword,
+			newPassword,
+		});
+		const response = await fetch("http://ipdp.local/update-password.php", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			body: bodyParams.toString(),
+			credentials: "include",
+		});
+		const data: UpdatePasswordResponse = await response.json();
+
+		if (response.ok && (data as UpdatePasswordResponseSuccess)?.success) {
+			const successData: UpdatePasswordResponseSuccess =
+				data as UpdatePasswordResponseSuccess;
+			console.log("Password update successful:", successData);
+			return { response, data };
+		} else {
+			const errorData: UpdatePasswordResponseError =
+				data as UpdatePasswordResponseError;
+			console.error("Password update failed:", errorData);
+			return {
+				response,
+				data,
+				error: errorData?.error || "Password update failed",
+			};
+		}
+	} catch (error) {
+		console.error("Error during fetch in updatePassword:", error);
+		return { error: "Failed to connect to the server" };
 	}
 }

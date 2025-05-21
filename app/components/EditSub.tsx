@@ -1,10 +1,17 @@
 "use client";
-import { submitSub } from "@/backend/subs";
+import { editSubscription } from "@/backend/subs"; // Assuming you have this function
 import {
-	SubmitSubscriptionResponseError,
-	SubmitSubscriptionResponseSuccess,
+	EditSubscriptionResponseError,
+	EditSubscriptionResponseSuccess,
+	Subscription,
 } from "@/types/subResponse";
 import { useState, useEffect } from "react";
+
+interface EditSubFormProps {
+	initialSubscription: Subscription;
+	onSubscriptionUpdated: (updatedSubscription: Subscription) => void;
+	onClose: () => void;
+}
 
 const predefinedApps = [
 	"Netflix",
@@ -32,14 +39,22 @@ function calculateEndDate(start: string, frequency: string): string {
 	return date.toISOString().split("T")[0];
 }
 
-export default function SubForm() {
-	const [platform, setPlatform] = useState(predefinedApps[0]);
+export default function EditSubForm({
+	initialSubscription,
+	onSubscriptionUpdated,
+	onClose,
+}: EditSubFormProps) {
+	const [platform, setPlatform] = useState(initialSubscription.platform);
 	const [customPlatform, setCustomPlatform] = useState("");
-	const [startDate, setStartDate] = useState("");
-	const [billingDate, setBillingDate] = useState("");
-	const [price, setPrice] = useState("");
-	const [frequency, setFrequency] = useState("monthly");
-	const [currency, setCurrency] = useState("RON");
+	const [startDate, setStartDate] = useState(initialSubscription.start_date);
+	const [billingDate, setBillingDate] = useState(
+		initialSubscription.billing_date
+	);
+	const [price, setPrice] = useState(initialSubscription.price);
+	const [frequency, setFrequency] = useState(
+		initialSubscription.billing_frequency
+	);
+	const [currency, setCurrency] = useState(initialSubscription.currency);
 	const [error, setError] = useState<string>("");
 
 	useEffect(() => {
@@ -55,36 +70,39 @@ export default function SubForm() {
 		if (authData) {
 			const userId = parseInt(JSON.parse(authData).userId);
 			if (!isNaN(userId)) {
-				const { response, data, error } = await submitSub(
-					platform,
-					startDate!,
-					billingDate!,
-					frequency,
-					price,
-					currency,
-					userId
-				);
+				const platformToSend = platform === "Altul" ? customPlatform : platform;
+                const { response, data, error } = await editSubscription({
+					id: initialSubscription.id,
+					userId: userId,
+					platform: platformToSend,
+					startDate: startDate!,
+					billingDate: billingDate!,
+					billingFrequency: frequency,
+					price: price,
+					currency: currency,
+				});
+
 				if (error) {
 					setError(error);
-					console.error("Error during sub adding:", error);
+					console.error("Error during sub editing:", error);
 					return;
 				}
-				if (
-					response?.ok &&
-					(data as SubmitSubscriptionResponseSuccess)?.success
-				) {
-					const successData: SubmitSubscriptionResponseSuccess =
-						data as SubmitSubscriptionResponseSuccess;
-					console.log("Sub added successful:", successData);
+
+                if (response?.ok && (data as EditSubscriptionResponseSuccess)?.success) {
+                    const successData: EditSubscriptionResponseSuccess =
+                        data as EditSubscriptionResponseSuccess;
+                    console.log("Sub edited successfully:", successData);
+                    onSubscriptionUpdated(successData.updatedSubscription);
+                    onClose();
 				} else {
-					const errorData: SubmitSubscriptionResponseError =
-						data as SubmitSubscriptionResponseError;
-					setError(errorData?.error || "Sub add failed");
-					console.error("Sub add failed:", errorData);
+					const errorData: EditSubscriptionResponseError =
+						data as EditSubscriptionResponseError;
+					setError(errorData?.error || "Sub edit failed");
+					console.error("Sub edit failed:", errorData);
 				}
 			} else {
 				setError("User ID not found");
-				console.error(error);
+				console.error("User ID not found");
 			}
 		}
 	};
@@ -92,7 +110,7 @@ export default function SubForm() {
 	return (
 		<div className="max-w-md mx-auto mt-10 p-4 w-100 bg-white shadow-xl rounded-2xl">
 			<h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-				Add Subscription
+				Edit Subscription
 			</h2>
 			<form onSubmit={handleSubmit} className="space-y-4 p-4">
 				{/* App Selection */}
@@ -176,7 +194,7 @@ export default function SubForm() {
 					</select>
 				</div>
 
-				{/* End Date (auto-calculated) */}
+				{/* Billing Date (auto-calculated but editable) */}
 				<div>
 					<label
 						htmlFor="billingDate"
@@ -242,7 +260,14 @@ export default function SubForm() {
 					className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
 					onClick={handleSubmit}
 				>
-					Add Subscription
+					Save Changes
+				</button>
+				<button
+					type="button"
+					className="w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition mt-2"
+					onClick={onClose}
+				>
+					Cancel
 				</button>
 			</form>
 		</div>
