@@ -3,8 +3,7 @@
 import {
 	UserIcon,
 	HomeIcon,
-	ChartBarIcon,
-	BellIcon,
+	ChartBarIcon
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
@@ -22,9 +21,6 @@ export default function Sidebar() {
 	const handleChartClick = () => {
 		router.push("home/all-subscriptions");
 	};
-	const handleBellClick = () => {
-		router.push("/alerts");
-	};
 
 	const menuItems = [
 		{
@@ -38,10 +34,6 @@ export default function Sidebar() {
 		{
 			icon: <ChartBarIcon className="w-6 h-6" onClick={handleChartClick} />,
 			label: "Stats",
-		},
-		{
-			icon: <BellIcon className="w-6 h-6" onClick={handleBellClick} />,
-			label: "Alerts",
 		},
 	];
 
